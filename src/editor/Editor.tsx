@@ -1,7 +1,7 @@
 // Editor.tsx
 import { ComponentProps, ForwardedRef, SyntheticEvent } from 'react';
 import React from 'react';
-import { cls, getScopedSelection, getSelectedNode, getSelectedNode2, setForwardRef } from '../utils';
+import { cls, getScopedSelection, getSelectedNode2, setForwardRef } from '../utils';
 import { ContentEditable, ContentEditableProps } from './ContentEditable';
 import { useEditorState } from './EditorContext';
 import '../styles.css';
