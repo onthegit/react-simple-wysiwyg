@@ -10,7 +10,6 @@
     "start": "npm run build && npm start --prefix examples/typescript",
     "build": "rm -rf lib && rollup -c",
     "pages": "gh-pages -d examples/github.io",
-    "lint": "tsc --noEmit && eslint src examples",
     "postversion": "git push && git push --tags",
     "prepare": "npm install --prefix examples/typescript",
     "prepack": "npm run build && npm run test",
