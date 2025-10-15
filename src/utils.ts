@@ -25,6 +25,14 @@ export function getSelectedNode(): Node | undefined {
   return undefined;
 }
 
+export function getSelectedNode2(rootEl?: HTMLElement): Node | undefined {
+  const root = rootEl?.getRootNode() as Document | ShadowRoot | undefined || window;
+  const sel: Selection | null = root && typeof (root as any).getSelection === 'function'
+    ? (root as any).getSelection()
+    : (rootEl?.ownerDocument ?? document).getSelection();
+  return sel?.focusNode ?? undefined;
+}
+
 export function normalizeHtml(str: unknown): string {
   return typeof str === 'string'
     ? str.replace(/&nbsp;|\u202F|\u00A0/g, ' ').replace(/<br \/>/g, '<br>')
