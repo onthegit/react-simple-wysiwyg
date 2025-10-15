@@ -127,6 +127,9 @@ export function createButton(
         command(editorState);
       } else {
         execScoped($el || undefined, command);
+        // NEW: force a refresh so 'active' recomputes even for collapsed carets
+        const sel = getScopedSelection($el || undefined);
+        editorState.update({ $selection: sel?.focusNode ?? undefined });
       }
     }
 
