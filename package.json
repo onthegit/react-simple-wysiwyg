@@ -11,6 +11,7 @@
     "build": "rm -rf lib && rollup -c",
     "pages": "gh-pages -d examples/github.io",
     "postversion": "git push && git push --tags",
+    "lint": "tsc --noEmit && eslint src examples",
     "prepare": "npm install --prefix examples/typescript",
     "prepack": "npm run build && npm run test",
     "test": "npm run lint && spech",

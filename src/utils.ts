@@ -33,7 +33,9 @@ export function normalizeHtml(str: unknown): string {
 
 export const getActiveElement = (el?: HTMLElement) => {
   const root = el?.getRootNode();
-  return root && root instanceof ShadowRoot ? root.activeElement : document.activeElement;
+  return root && root instanceof ShadowRoot
+    ? root.activeElement
+    : document.activeElement;
 };
 
 export function replaceCaret(el: HTMLElement) {
