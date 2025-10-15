@@ -3,6 +3,7 @@ import type { HTMLAttributes, MouseEvent, ReactNode } from 'react';
 import { EditorState, useEditorState } from '../editor/EditorContext';
 import OrderedListIcon from './icons/OrderedListIcon';
 import UnorderedListIcon from './icons/UnorderedListIcon';
+import { getActiveElement } from '../utils';
 
 export const BtnBold = createButton('Bold', '𝐁', 'bold');
 
@@ -63,7 +64,7 @@ export function createButton(
   function ButtonFactory(props: HTMLAttributes<HTMLButtonElement>) {
     const editorState = useEditorState();
     const { $el } = editorState;
-    const isElFocused = () => Boolean($el?.contains(document.activeElement));
+    const isElFocused = () => Boolean($el?.contains(getActiveElement()));
 
     let active = false;
     if (typeof command === 'string') {

@@ -1,6 +1,7 @@
 import React from 'react';
 import type { ChangeEvent, FC, HTMLAttributes } from 'react';
 import { EditorState, useEditorState } from '../editor/EditorContext';
+import { getActiveElement } from '../utils';
 
 export const BtnStyles = createDropdown('Styles', [
   ['Normal', 'formatBlock', 'DIV'],
@@ -49,7 +50,7 @@ export function createDropdown(
 
       e.preventDefault();
 
-      if (document.activeElement !== $el) {
+      if (getActiveElement() !== $el) {
         $el?.focus();
       }
 

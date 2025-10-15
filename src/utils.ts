@@ -31,13 +31,18 @@ export function normalizeHtml(str: unknown): string {
     : String(str);
 }
 
+export const getActiveElement = (el?: HTMLElement) => {
+  const root = el?.getRootNode();
+  return root && root instanceof ShadowRoot ? root.activeElement : document.activeElement;
+};
+
 export function replaceCaret(el: HTMLElement) {
   // Place the caret at the end of the element
   const target = document.createTextNode('');
   el.appendChild(target);
 
   // do not move caret if element was not focused
-  const isTargetFocused = document.activeElement === el;
+  const isTargetFocused = getActiveElement() === el;
   if (target !== null && target.nodeValue !== null && isTargetFocused) {
     const sel = window.getSelection();
     if (sel !== null) {
