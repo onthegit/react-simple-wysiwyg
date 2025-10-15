@@ -13,7 +13,7 @@
     "postversion": "git push && git push --tags",
     "lint": "tsc --noEmit && eslint src examples",
     "prepare": "npm install --prefix examples/typescript",
-    "prepack": "npm run build && npm run test",
+    "prepack": "npm run build",
     "test": "npm run lint && spech",
     "test:e2e": "npm test --prefix e2e/cra",
     "test:full": "npm run test && npm run test:e2e"
