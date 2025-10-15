@@ -57,16 +57,26 @@ function execScoped(editorEl: HTMLElement | undefined, command: string, value?: 
 
 function queryStateScoped(editorEl: HTMLElement | undefined, command: string): boolean {
   const doc = editorEl?.ownerDocument ?? document;
+  const sel = getScopedSelection(editorEl);
+  const isCollapsed = !!sel?.isCollapsed;
+
   try {
-    // If selection is bridged to document, this will be correct
     const v = doc.queryCommandState(command);
-    // If browsers return false for shadow selections, fall back to manual checks:
-    if (v === false) return isFormatActiveFallback(command, editorEl);
-    return v;
+
+    // If caret is collapsed, trust the typing state from the browser.
+    if (isCollapsed) return !!v;
+
+    // For non-collapsed ranges:
+    // - if browser says true, it's definitely active
+    // - if browser says false, fall back to DOM inspection
+    if (v === true) return true;
+    return isFormatActiveFallback(command, editorEl);
   } catch {
+    // If queryCommandState throws (some envs), rely on fallback
     return isFormatActiveFallback(command, editorEl);
   }
 }
+
 
 /** ---------- Buttons ---------- */
 
@@ -129,7 +139,7 @@ export function createButton(
         execScoped($el || undefined, command);
         // NEW: force a refresh so 'active' recomputes even for collapsed carets
         const sel = getScopedSelection($el || undefined);
-        editorState.update({ $selection: sel?.focusNode ?? undefined });
+        editorState.update({ $selection: sel?.focusNode ?? undefined });        
       }
     }
 
