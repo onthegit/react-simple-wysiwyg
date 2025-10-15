@@ -3,25 +3,7 @@ import type { HTMLAttributes, PointerEvent, ReactNode } from 'react';
 import { EditorState, useEditorState } from '../editor/EditorContext';
 import OrderedListIcon from './icons/OrderedListIcon';
 import UnorderedListIcon from './icons/UnorderedListIcon';
-import { getActiveElement } from '../utils';
-
-/** ---------- Root / selection helpers ---------- */
-
-function getRoot(el?: HTMLElement): Document | ShadowRoot | null {
-  return el ? (el.getRootNode() as Document | ShadowRoot) : null;
-}
-
-function getScopedSelection(el?: HTMLElement): Selection | null {
-  const root = getRoot(el);
-  // ShadowRoot has getSelection() in modern Chromium/Firefox; fall back to document/window.
-  if (root && 'getSelection' in root && typeof (root as any).getSelection === 'function') {
-    return (root as any).getSelection() as Selection | null;
-  }
-  const doc = el?.ownerDocument ?? document;
-  return doc.getSelection();
-}
-
-
+import { getActiveElement, getScopedSelection } from '../utils';
 
 /** Tag checks used when queryCommandState can’t see into Shadow DOM */
 function closestTag(el: Node | null, tagNames: string[], stopAt?: HTMLElement): HTMLElement | null {

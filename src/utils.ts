@@ -46,8 +46,8 @@ export function replaceCaret(el: HTMLElement) {
   // do not move caret if element was not focused
   const isTargetFocused = getActiveElement() === el;
   if (target !== null && target.nodeValue !== null && isTargetFocused) {
-    const sel = window.getSelection();
-    if (sel !== null) {
+    const sel = getScopedSelection(el);
+    if (sel) {
       const range = document.createRange();
       range.setStart(target, target.nodeValue.length);
       range.collapse(true);
@@ -68,4 +68,19 @@ export function setForwardRef<T = HTMLDivElement>(
     // eslint-disable-next-line no-param-reassign
     ref.current = el;
   }
+}
+
+
+export function getRoot(el?: HTMLElement): Document | ShadowRoot | null {
+  return el ? (el.getRootNode() as Document | ShadowRoot) : null;
+}
+
+export function getScopedSelection(el?: HTMLElement): Selection | null {
+  const root = getRoot(el);
+  // ShadowRoot has getSelection() in modern Chromium/Firefox; fall back to document/window.
+  if (root && 'getSelection' in root && typeof (root as any).getSelection === 'function') {
+    return (root as any).getSelection() as Selection | null;
+  }
+  const doc = el?.ownerDocument ?? document;
+  return doc.getSelection();
 }
